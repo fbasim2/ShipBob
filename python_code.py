@@ -25,6 +25,7 @@ while True:
     cv2.imshow("code detector", img)
     if(cv2.waitKey(1) == ord("q")):
         break
+    
 # free camera object and exit
 cap.release()
 cv2.destroyAllWindows()
