@@ -1,40 +1,75 @@
+from types import SimpleNamespace
+from dataclasses import dataclass
 import time
 import os
+from en import en
+from spa import spa
+
+class NestedNamespace(SimpleNamespace):
+    def __init__(self, dictionary, **kwargs):
+        super().__init__(**kwargs)
+        for key, value in dictionary.items():
+            if isinstance(value, dict):
+                self.__setattr__(key, NestedNamespace(value))
+            else:
+                self.__setattr__(key, value)
 
 #settings functionallity#
-language = "english"
+lang = "en"
 unit = "imperial"
+text = {}
+text.update({lang: NestedNamespace(en)})
 
 
-def settings ():
+
+
+
+
+def settings (lang):
     while(1):
-        inp = input("settings: (1) language (2) unit (3) exit\n")
+        inp = input(text[lang].settings.options)
         #language
         if(inp == "1"):
-            lngInp = input("select language:(1) english, (2) spanish\n")
+            #language options
+            lngInp = input(text[lang].settings.languages)
+            #english
             if(lngInp == "1"):
-                language = "english"
-                print("%s selected", language)
+                lang = "en"
+                text.update({lang: NestedNamespace(en)})
+                print(text[lang].settings.enSelected)
+            #spanish
             elif(lngInp == "2"):
-                language = "spanish"
-                print("%s selected", unit)
+                lang = "spa"
+                text.update({lang: NestedNamespace(spa)})
+                print(text[lang].settings.spaSelected)
             else:
                 print("invalid input")
 
-        #unit
+        #unita
         elif(inp == "2"):
-            unitInp = input("select unit: (1)imperial(lb) (2)metric\n")
+            #unit options
+            unitInp = input(text[lang].settings.units)
+            
+            #imperial
             if(unitInp =="1"):
                 unit = "imperial"
-                print("%s selected", unit)
+                print(text[lang].settings.ImpSelected)
+            
+            #metric
             elif(unitInp == "2"):
                 unit = "metric"
-                print("%s selected", unit)
+                print(text[lang].settings.MetSelected)
+
+            elif(inp == "3"):
+                return
+            else:
+                #invalid input
+                print(text[lang].settings.inv)
 
         elif(inp == "3"):
             return
         else:
-            print("invalid input\n")
+            print(text[lang].settings.inv)
 
 
 
@@ -43,15 +78,16 @@ def settings ():
 
 #shift start func
 def shiftStart():
-    print("shift started")
-    inp = input("(1) scanning mode")
+    print(text[lang].shift.start)
+    inp = input(text[lang].shift.scanSlct)
     #passive message function
 
     #scan mode
     if(inp == "1"):
-        print("scanning mode")
+        print(text[lang].shift.scanningMode)
         while(1):
-            scn_val = input("ready for scan")
+            scn_val = input(text[lang].shift.ready)
+            
 
             #search for item
             ##if item found, display contents
@@ -67,14 +103,15 @@ def shiftStart():
 def picker():
     
     while(1):
-     print("Picker Mode\npress (x) times to select\n")
-     inp = input("(1) start shift\n(2) mode selection\n")
+    # print(text[lang].picker.select)
+     print(text[lang].picker.select)
+     inp = input(text[lang].picker.options)
      
      if(inp == "1"):
          shiftStart()
          
      elif(inp == "2"):
-         print("returning to mode selection")
+         print(text[lang].picker.rtoMode)
          break
 
     return
@@ -87,20 +124,22 @@ def training():
 
 #intro message & ask for mode selection
 def main():
-    print("\nHello!\nWelcome to Shipbob AR")
+    
+
+    print(text[lang].menu.greeting)
     time.sleep(3)
     os.system("clear")
-    print("Please select work mode\nPress (x) times to select\n")
+    print(text[lang].menu.modeSelect)
     while(1):
 
-        mode = input("(1) Picker mode\n(2) Settings\n")
+        mode = input(text[lang].menu.modeOpt)
 
         if (mode == "1"):
             picker()
         elif(mode == "2"):
-            settings()
+            settings(lang)
         else:
-            print("invalid input")
+            print(text[lang].menu.inv)
 
         
 
