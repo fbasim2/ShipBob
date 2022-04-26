@@ -86,23 +86,24 @@ def shiftStart():
     #scan mode
     if(inp == "1"):
         print(text[lang].shift.scanningMode)
+        
         while(1):
             scn_val = input(text[lang].shift.ready)
+            
             
             if scn_val in itemList:
                 print(itemList[scn_val].name)
                 print(itemList[scn_val].description)
                 print(itemList[scn_val].location)
                 print(itemList[scn_val].qty)
-
+            
+            if GPIO.input(u_pin) == True:
+                picker()
 
 
             #search for item
             ##if item found, display contents
             #else not found
-
-            if(scn_val == "1"):
-                break
 
 
 
