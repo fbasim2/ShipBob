@@ -1,5 +1,6 @@
 from types import SimpleNamespace
 from dataclasses import dataclass
+from items import itemList
 import time
 import os
 from en import en
@@ -88,6 +89,13 @@ def shiftStart():
         while(1):
             scn_val = input(text[lang].shift.ready)
             
+            if scn_val in itemList:
+                print(itemList[scn_val].name)
+                print(itemList[scn_val].description)
+                print(itemList[scn_val].location)
+                print(itemList[scn_val].qty)
+
+
 
             #search for item
             ##if item found, display contents
